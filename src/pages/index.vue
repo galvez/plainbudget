@@ -14,10 +14,11 @@ export default {
   data () {
     return {
       text: `
-hello world
-foo bar
-new line
-      `.trim()
++  1000 Salary
+-   500 Expense A
+-   200 Expense B
+-   100 Expense C
+=   200`.trim()
     }
   },
   methods: {
