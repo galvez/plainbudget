@@ -3,11 +3,8 @@
     v-model="text"
     @click="handler"
     @keydown.native="handler"
-    @keydown.up="handler"
-    @keydown.down="handler">
-  hello world
-  foo bar
-  new line
+    @keyup.up="handler"
+    @keyup.down="handler">
   </textarea>
 </template>
 
@@ -31,7 +28,7 @@ export default {
       const finalSlice = nextNewLine !== -1
         ? secondSlice.slice(0, nextNewLine)
         : secondSlice
-      const nextPos = finalSlice.search(/\d\s+/)
+      const nextPos = finalSlice.search(/(\d\s)|(\d$)/)
       if (nextPos !== -1) {
         return (firstSlice.length + nextPos) + 1
       } else {
@@ -67,9 +64,10 @@ export default {
 
 <style lang="scss">
 .ta {
+  font-family: monospace;
   border: 1px solid #000;
-  width: 500px;
-  height: 500px;
+  width: 300px;
+  height: 300px;
   outline: none;
 }
 </style>
