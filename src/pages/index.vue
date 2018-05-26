@@ -21,6 +21,49 @@ export default {
     }
   },
   methods: {
+    parseValueFromLine (line) {
+      let value = line.slice(1).match(/\d+/)
+      if (value) {
+        value = parseInt(value[0])
+        if (isNaN(value)) {
+          value = '?'
+        }
+      }
+      return value
+    },
+    parseGroups () {
+      this.groups = []
+      this.lines = this.text.split(/\n/gus)
+      let group = null
+      let op, line, value, label
+      for (let i = 0, len = this.lines.length; i < len; i++) {
+        line = this.lines[i]
+        op = line[0]
+        if ('=+'.includes(op) && group != null) {
+          value = this.parseValueFromLine(line)
+          label = line.slice(1).match(/\d+\s+(.+)/)
+          group = [[line[0], value, label || '']]
+        } else if ('-~+x]'.includes(op)) {
+          value = line.slice(1).match(/\d+/)
+          value = this.parseValueFromLine(line)
+          label = line.slice(1).match(/\d+\s+(.+)/)
+          group.push([op, value, label])
+        } else if (line.match(/^\s*$/) && group !== null) {
+          this.groups.push(group)
+          group = null
+        }
+      }
+      if (group !== null && this.groups.slice(-1) !== group) {
+        this.groups.append(group)
+      }
+    }
+    parseLine (line) {
+
+    },
+    determinePadding () {
+      const lines = this.text.split(/\n/gus)
+      lines.forEach(())
+    },
     findNextCaretPosition (lineStart) {
       const firstSlice = this.text.slice(0, lineStart)
       const secondSlice = this.text.slice(lineStart)
