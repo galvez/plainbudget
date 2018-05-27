@@ -15,9 +15,6 @@ module.exports = {
       '/'
     ]
   },
-  modules: [
-    ['@nuxtjs/pwa', { icon: false }]
-  ],
   router: {
     base: '/plainbudget/'
   },
