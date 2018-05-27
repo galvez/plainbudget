@@ -63,10 +63,12 @@
 </div>
 </div>
 
-      <p>This is a <a href="">work in progress</a>. The goal is to turn this 
-      into a web application where an user can have <i>multiple sheets</i> and 
-      save/export his work. If you feel like helping checkout <a href="">these 
-      open issues</a>.</p>
+      <p>This is a <a href="http://github.com/galvez/plainbudget">work in 
+      progress</a>. The goal is to turn this into a web application where an user 
+      can have <i>multiple sheets</i> and save/export his work. If you feel like 
+      helping check out 
+      <a href="https://github.com/galvez/plainbudget/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+">
+      these open issues</a>.</p>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <a href="https://github.com/you">
+    <a href="https://github.com/galvez/plainbudget">
       <img class="github" src="~/assets/forkme.png" alt="Fork me on GitHub">
     </a>
     <nuxt />
