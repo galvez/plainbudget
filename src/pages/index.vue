@@ -1,30 +1,35 @@
 <template>
-  <textarea ref="ta" class="ta"
+  <textarea v-loading.fullscreen.lock="updating" ref="ta" class="ta"
     v-model="text"
-    @click="handler"
-    @keydown.native="handler"
+    @click="update"
     @keyup.up="handler"
     @keyup.down="handler">
   </textarea>
 </template>
 
 <script>
-
 export default {
   data () {
     return {
+      updating: false,
       lines: [],
       groups: [],
       sums: [],
       text: `
-+  1000 Salary
--   500 Expense A
--   200 Expense B
--   100 Expense C`.trim()
++ 1000 Salary
+- 500 Expense A
+- 200 Expense B
+- 100 Expense C
+
+= Expenses
+- 1000 Car
+- 2000 House
+`.trim()
     }
   },
   mounted () {
     window.app = this
+    document.body.addEventListener('keydown', this.cmdEnterHandler)
   },
   methods: {
     parseValue (line) {
@@ -40,7 +45,7 @@ export default {
     parseLine (line) {
       const value = this.parseValue(line)
       let label = line.slice(1).match(/\d+\s+(.+)/)
-      label = label ? label[1] : ''
+      label = label ? label[1] : line.slice(1).trim()
       return [line[0], value, label]
     },
     parseMultiplier (label) {
@@ -57,12 +62,13 @@ export default {
       )
     },
     parse () {
+      this.groups = []
       this.lines = this.text.split(/\n/)
       // console.log('this.lines', this.lines)
       let group = null
       let op, line
       for (let i = 0, len = this.lines.length; i < len; i++) {
-        line = this.lines[i]
+        line = this.lines[i].trim()
         // console.log('line', line)
         op = line[0]
         // console.log('op', op)
@@ -70,29 +76,32 @@ export default {
           group = [this.parseLine(line)]
         } else if ('-~+x'.includes(op)) {
           group.push(this.parseLine(line))
-        } else if (line.match(/^\s*$/) && group !== null) {
+        } else if (line.match(/^\s*$/) && group !== null && group.length > 1) {
           this.groups.push(group)
           group = null
         }
       }
-      if (group !== null && !this.groupEquals(this.groups.slice(-1), group)) {
+      if (group !== null && !this.groupEquals(this.groups.slice(-1), group) && group.length > 1) {
         this.groups.push(group)
       }
     },
     update () {
-      const updated = ['\n']
+      this.updating = true
+      this.parse()
+      this.calc()
+      const padding = this.getPadding()
+      const updated = []
       let group, op
       for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
         group = this.groups[x]
         for (let y = 0, ylen = group.length; y < ylen; y++) {
           op = group[y]
-          updated.push(`${op[0]} ${op[1]} ${op[2]}`)
+          updated.push(`${op[0]} ${op[1].toString().padStart(padding)} ${op[2]}\n`)
         }
-        if (x < xlen - 1) {
-          updated.push('\n')
-        }
+        updated.push('\n')
       }
-      this.text = updated.join('\n')
+      this.text = `\n${updated.join('').trim()}\n`
+      this.updating = false
     },
     calc () {
       let group, value
@@ -142,25 +151,20 @@ export default {
         if (group[0][0] === '=') {
           group[0][1] = value
         } else {
-          group.push(['=', value, '\n'])
+          group.push(['=', value, ''])
         }
         this.sums.push(value)
       }
     },
-    leftPad (padding, value) {
-      value = value.toString()
-      const spaces = new Array(padding - 1).join(' ')
-      return `${spaces}${value}`.slice(value.length - spaces.length)
-    },
     getPadding () {
-      let p = 6
+      let p = 4
       let nlen, group
       for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
         group = this.groups[x]
         for (let y = 0, ylen = group.length; y < ylen; y++) {
           nlen = group[y][1].toString().length
           if (nlen > p) {
-            p = nlen
+            p = nlen + 1
           }
         }
       }
@@ -189,29 +193,41 @@ export default {
       }
       return 0
     },
-    handler () {
-      this.parse()
-      // this.calc()
-      // this.update()
-      // const curPos = this.$refs.ta.selectionStart
-      // console.log('curPos', curPos)
-      // const prevLB = this.findPreviousLB(curPos)
-      // const newPos = this.getNextCaretPos(prevLB)
-      // console.log('newPos', newPos)
-      // this.$nextTick(() => {
-      //   this.$refs.ta.setSelectionRange(newPos, newPos)
-      // })
-    }
+    cmdEnterHandler (ev) {
+      if ((ev.metaKey || ev.ctrlKey) && ev.keyCode === 13) {
+        this.update()
+      }
+    },
+    // this.parse()
+    // this.calc()
+    // this.update()
+    // const curPos = this.$refs.ta.selectionStart
+    // console.log('curPos', curPos)
+    // const prevLB = this.findPreviousLB(curPos)
+    // const newPos = this.getNextCaretPos(prevLB)
+    // console.log('newPos', newPos)
+    // this.$nextTick(() => {
+    //   this.$refs.ta.setSelectionRange(newPos, newPos)
+    // })
   }
 }
 </script>
 
 <style lang="scss">
+html, body {
+  margin: 0px;
+  padding: 0px;
+}
 .ta {
-  font-family: monospace;
-  border: 1px solid #000;
-  width: 300px;
-  height: 300px;
+  margin-left: 100px;
+  padding-left: 20px;
+  background: #f6f6f6;
+  height: 100vh;
+  overflow: scroll;
+  font-family: 'Fira Mono', monospace;
+  font-size: 20px;
+  border: none;
+  width: 600px;
   outline: none;
 }
 </style>
