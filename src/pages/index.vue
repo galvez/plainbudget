@@ -1,10 +1,31 @@
 <template>
-  <textarea ref="ta" class="ta"
-    v-model="text"
-    @click="update"
-    @keyup.up="handler"
-    @keyup.down="handler">
-  </textarea>
+  <div class="wrapper">
+    <textarea ref="ta" class="ta"
+      v-model="text"
+      @click="update"
+      @keyup.up="handler"
+      @keyup.down="handler">
+    </textarea>
+    <div class="doc">
+      <p>For longer than I can remember, I have done all my personal budgeting 
+      using a script I wrote called <b class="mono">plainbudget</b>.</p>
+
+      <p>It's designed
+      to be extremely minimalist and processes text formatted like a series of 
+      <b>value groups</b>, like a basic bank statement. Depending on what operations
+      you define, you get a computed sum at the end or at the top of each group.</p>
+
+      <p>There are two kinds of value groups: <b>cashflow</b> and <b>expense</b>. A 
+      <b>cashflow</b> value group always <b>starts with one or more <b class="mono">+</b></b> 
+      operations, followed by one or more <b class="mono">-</b> operations. Calculating
+      a <b>cashflow</b> group will add an extra line with the result:</p>
+
+      <p>An <b>expenses</b> value group can be used to simply calculate a series
+      of expenses. These groups always start with a <b class="mono">=</b> 
+      operation, followed by one or more <b class="mono">-</b> operations. Calculating
+      an <b>expenses</b> group adds the result <b>right at the top</b>:</p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -24,7 +45,7 @@ export default {
 = Expenses
 - 1000 Car
 - 2000 House
-`.trim()
+`
     }
   },
   mounted () {
@@ -216,16 +237,38 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
+.wrapper {
+  width: 1440px;
+  margin: 0 auto;
+  display: flex;
+}
+.doc {
+  box-sizing: border-box;
+  width: 55vw;
+  p {
+    font-family: 'Sorts Mill Goudy', serif;
+    font-size: 20px;
+    margin: 0px;
+    margin-bottom: 10px;
+    padding: 20px;
+    padding-bottom: 0px;
+    padding-right: 200px;
+    &:first-child {
+      padding-top: 40px;
+    }
+  }
+}
 .ta {
-  margin-left: 100px;
-  padding-left: 20px;
+  box-sizing: border-box;
+  width: 45vw;
+  padding: 20px;
+  padding-left: 100px;
   background: #f6f6f6;
   height: 100vh;
   overflow: scroll;
   font-family: 'Fira Mono', monospace;
   font-size: 20px;
   border: none;
-  width: 600px;
   outline: none;
 }
 </style>
