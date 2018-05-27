@@ -8,7 +8,8 @@
     </textarea>
     <div class="doc">
       <p>For longer than I can remember, I have done all my personal budgeting 
-      using a script I wrote called <b class="mono">plainbudget</b>.</p>
+      using a script I wrote called <b class="mono">plainbudget</b>, which is 
+      now presented here ported to JavaScript, built with <a href="https://nuxtjs.org/">Nuxt</a>.</p>
 
       <p>It's designed
       to be extremely minimalist and processes text formatted like a series of 
@@ -20,10 +21,46 @@
       operations, followed by one or more <b class="mono">-</b> operations. Calculating
       a <b>cashflow</b> group will add an extra line with the result:</p>
 
+      <div class="example">
+        <div class="input">
+          <h2>Input</h2>
++ 1000 Salary
+- 500 Expenses A
+- 200 Expenses B
+        </div>
+        <div class="output">
+          <h2>Output</h2>
++ 1000 Salary
+-  500 Expenses A
+-  200 Expenses B
+=  300
+</div>
+</div>
+
       <p>An <b>expenses</b> value group can be used to simply calculate a series
       of expenses. These groups always start with a <b class="mono">=</b> 
       operation, followed by one or more <b class="mono">-</b> operations. Calculating
       an <b>expenses</b> group adds the result <b>right at the top</b>:</p>
+
+      <div class="example">
+        <div class="input">
+          <h2>Input</h2>
+= Expenses A
+- 300 Car payment
+- 200 Utilities bill
+        </div>
+        <div class="output">
+          <h2>Output</h2>
+=   500 Expenses A
+-   300 Car payment
+-   200 Utilities bill
+</div>
+</div>
+
+      <p>This is a <a href="">work in progress</a>. The goal is to turn this 
+      into a web application where an user can have <i>multiple sheets</i> and 
+      save/export his work. If you feel like helping checkout <a href="">these 
+      open issues</a>.</p>
     </div>
   </div>
 </template>
@@ -42,9 +79,9 @@ export default {
 - 200 Expense B
 - 100 Expense C
 
-= Expenses
-- 1000 Car
-- 2000 House
+= Expense A
+- 300 Car payment
+- 200 Utilities bill
 `
     }
   },
@@ -242,6 +279,14 @@ html, body {
   margin: 0 auto;
   display: flex;
 }
+a {
+  text-decoration: none;
+}
+b.mono {
+  font-family: 'Fira Mono', monospace;
+  background: #c3c3c3;
+  padding: 2px;
+}
 .doc {
   box-sizing: border-box;
   width: 55vw;
@@ -255,6 +300,24 @@ html, body {
     padding-right: 200px;
     &:first-child {
       padding-top: 40px;
+    }
+  }
+  .example {
+    margin: 0px;
+    padding: 20px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 200px;
+    display: flex;
+    h2 {
+      font-size: 16px;
+      margin-bottom: 0px;
+    }
+    .input, .output {
+      width: 50%;
+      white-space: pre;
+      font-family: 'Fira Mono', monospace;
+      font-size: 15px;
     }
   }
 }
