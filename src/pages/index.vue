@@ -1,5 +1,5 @@
 <template>
-  <textarea v-loading.fullscreen.lock="updating" ref="ta" class="ta"
+  <textarea ref="ta" class="ta"
     v-model="text"
     @click="update"
     @keyup.up="handler"
@@ -86,7 +86,6 @@ export default {
       }
     },
     update () {
-      this.updating = true
       this.parse()
       this.calc()
       const padding = this.getPadding()
@@ -101,7 +100,6 @@ export default {
         updated.push('\n')
       }
       this.text = `\n${updated.join('').trim()}\n`
-      this.updating = false
     },
     calc () {
       let group, value
@@ -170,45 +168,45 @@ export default {
       }
       return p
     },
-    getNextCaretPos (start) {
-      const before = this.text.slice(0, start)
-      const after = this.text.slice(start)
-      const next = after.indexOf('\n')
-      const final = (next !== -1) ? after.slice(0, next) : after
-      const nextPos = final.search(/(\d\s)|(\d$)/)
-      if (nextPos !== -1) {
-        return (before.length + nextPos) + 1
-      } else {
-        return (final.length + after.length) + 1
-      }
-    },
-    findPreviousLB (currentPos) {
-      if (currentPos === -1) {
-        return
-      }
-      for (let p = currentPos; p > 0; p--) {
-        if (this.text[p].match(/\n/)) {
-          return p + 1
-        }
-      }
-      return 0
-    },
+    // TODO Editing helpers
+    // getNextCaretPos (start) {
+    //   const before = this.text.slice(0, start)
+    //   const after = this.text.slice(start)
+    //   const next = after.indexOf('\n')
+    //   const final = (next !== -1) ? after.slice(0, next) : after
+    //   const nextPos = final.search(/(\d\s)|(\d$)/)
+    //   if (nextPos !== -1) {
+    //     return (before.length + nextPos) + 1
+    //   } else {
+    //     return (final.length + after.length) + 1
+    //   }
+    // },
+    // findPreviousLB (currentPos) {
+    //   if (currentPos === -1) {
+    //     return
+    //   }
+    //   for (let p = currentPos; p > 0; p--) {
+    //     if (this.text[p].match(/\n/)) {
+    //       return p + 1
+    //     }
+    //   }
+    //   return 0
+    // },
+    // handler () {
+    //   const curPos = this.$refs.ta.selectionStart
+    //   console.log('curPos', curPos)
+    //   const prevLB = this.findPreviousLB(curPos)
+    //   const newPos = this.getNextCaretPos(prevLB)
+    //   console.log('newPos', newPos)
+    //   this.$nextTick(() => {
+    //     this.$refs.ta.setSelectionRange(newPos, newPos)
+    //   })
+    // }
     cmdEnterHandler (ev) {
       if ((ev.metaKey || ev.ctrlKey) && ev.keyCode === 13) {
         this.update()
       }
     },
-    // this.parse()
-    // this.calc()
-    // this.update()
-    // const curPos = this.$refs.ta.selectionStart
-    // console.log('curPos', curPos)
-    // const prevLB = this.findPreviousLB(curPos)
-    // const newPos = this.getNextCaretPos(prevLB)
-    // console.log('newPos', newPos)
-    // this.$nextTick(() => {
-    //   this.$refs.ta.setSelectionRange(newPos, newPos)
-    // })
   }
 }
 </script>
