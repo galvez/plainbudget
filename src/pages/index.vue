@@ -286,9 +286,12 @@ html, body {
   font-size: 24px !important;
 }
 .wrapper {
+  min-width: 1440px;
   width: 1440px;
   margin: 0 auto;
   display: flex;
+  flex-basis: auto;
+  flex-grow: 1;
 }
 a {
   text-decoration: none;
@@ -300,7 +303,7 @@ b.mono {
 }
 .doc {
   box-sizing: border-box;
-  width: 55vw;
+  width: 55%;
   margin-bottom: 100px;
   p {
     font-family: 'Sorts Mill Goudy', serif;
@@ -336,7 +339,7 @@ b.mono {
 .ta-wrapper {
   position: relative;
   box-sizing: border-box;
-  width: 45vw;
+  width: 45%;
   .help {
     color: #555;
     position: absolute;
