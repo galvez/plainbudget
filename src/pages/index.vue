@@ -54,7 +54,7 @@ export default {
         }
       }
       if (group !== null && this.groups.slice(-1) !== group) {
-        this.groups.append(group)
+        this.groups.push(group)
       }
     }
     parseLine (line) {
