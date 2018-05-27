@@ -105,25 +105,23 @@ export default {
     parseLine (line) {
 
     },
-    determinePadding () {
+    setPadding () {
       const lines = this.text.split(/\n/gus)
       lines.forEach(())
     },
-    findNextCaretPosition (lineStart) {
-      const firstSlice = this.text.slice(0, lineStart)
-      const secondSlice = this.text.slice(lineStart)
-      const nextNewLine = secondSlice.indexOf('\n')
-      const finalSlice = nextNewLine !== -1
-        ? secondSlice.slice(0, nextNewLine)
-        : secondSlice
-      const nextPos = finalSlice.search(/(\d\s)|(\d$)/)
+    getNextCaretPos (lineStart) {
+      const before = this.text.slice(0, lineStart)
+      const after = this.text.slice(lineStart)
+      const next = after.indexOf('\n')
+      const final = (next !== -1) ? after.slice(0, next) : after
+      const nextPos = final.search(/(\d\s)|(\d$)/)
       if (nextPos !== -1) {
-        return (firstSlice.length + nextPos) + 1
+        return (before.length + nextPos) + 1
       } else {
-        return (finalSlice.length + secondSlice.length) + 1
+        return (final.length + after.length) + 1
       }
     },
-    findPreviousLineBreak (currentPos) {
+    findPreviousLB (currentPos) {
       if (currentPos === -1) {
         return
       }
@@ -138,8 +136,8 @@ export default {
     handler () {
       const currentPos = this.$refs.ta.selectionStart
       console.log('currentPos', currentPos)
-      const prevLineBreak = this.findPreviousLineBreak(currentPos)
-      const newPos = this.findNextCaretPosition(prevLineBreak)
+      const prevLineBreak = this.findPreviousLB(currentPos)
+      const newPos = this.getNextCaretPos(prevLineBreak)
       console.log('newPos', newPos)
       this.$nextTick(() => {
         this.$refs.ta.setSelectionRange(newPos, newPos)
