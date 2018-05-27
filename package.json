@@ -13,6 +13,7 @@
   },
   "author": "Jonas Galvez",
   "dependencies": {
+    "@nuxtjs/pwa": "^2.0.8",
     "nuxt": "^1.4.0",
     "vue": "^2.4.2"
   },
