@@ -134,10 +134,10 @@ export default {
       return 0
     },
     handler () {
-      const currentPos = this.$refs.ta.selectionStart
-      console.log('currentPos', currentPos)
-      const prevLineBreak = this.findPreviousLB(currentPos)
-      const newPos = this.getNextCaretPos(prevLineBreak)
+      const curPos = this.$refs.ta.selectionStart
+      console.log('curPos', curPos)
+      const prevLB = this.findPreviousLB(curPos)
+      const newPos = this.getNextCaretPos(prevLB)
       console.log('newPos', newPos)
       this.$nextTick(() => {
         this.$refs.ta.setSelectionRange(newPos, newPos)
