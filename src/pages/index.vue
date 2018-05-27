@@ -5,23 +5,26 @@
     @keydown.native="handler"
     @keyup.up="handler"
     @keyup.down="handler">
+    +  1000 Salary
+    -   500 Expense A
+    -   200 Expense B
+    -   100 Expense C
   </textarea>
 </template>
 
 <script>
+
 export default {
   data () {
     return {
-      text: `
-+  1000 Salary
--   500 Expense A
--   200 Expense B
--   100 Expense C
-=   200`.trim()
+      lines: [],
+      groups: [],
+      sums: [],
+      text: null
     }
   },
   methods: {
-    parseValueFromLine (line) {
+    parseValue (line) {
       let value = line.slice(1).match(/\d+/)
       if (value) {
         value = parseInt(value[0])
@@ -31,23 +34,22 @@ export default {
       }
       return value
     },
+    parseLine (line) {
+      const value = this.parseValue(line)
+      const label = line.slice(1).match(/\d+\s+(.+)/)
+      return [line[0], value, label || '']
+    },
     parseGroups () {
-      this.groups = []
       this.lines = this.text.split(/\n/gus)
       let group = null
       let op, line, value, label
       for (let i = 0, len = this.lines.length; i < len; i++) {
-        line = this.lines[i]
+        line = this.lines[i].trim()
         op = line[0]
         if ('=+'.includes(op) && group !== null) {
-          value = this.parseValueFromLine(line)
-          label = line.slice(1).match(/\d+\s+(.+)/)
-          group = [[line[0], value, label || '']]
-        } else if ('-~+x]'.includes(op)) {
-          value = line.slice(1).match(/\d+/)
-          value = this.parseValueFromLine(line)
-          label = line.slice(1).match(/\d+\s+(.+)/)
-          group.push([op, value, label])
+          group = [this.parseLine(line)]
+        } else if ('-~+x'.includes(op)) {
+          group.push(this.parseLine(line))
         } else if (line.match(/^\s*$/) && group !== null) {
           this.groups.push(group)
           group = null
@@ -100,18 +102,21 @@ export default {
             }
           }
         }
+        if (group[0][0] === '=') {
+          group[0][1] = value
+        } else {
+          group.push(['=', value, '\n'])
+        }
+        this.sums.push(value)
       }
-    },
-    parseLine (line) {
-
     },
     setPadding () {
       const lines = this.text.split(/\n/gus)
       lines.forEach(())
     },
-    getNextCaretPos (lineStart) {
-      const before = this.text.slice(0, lineStart)
-      const after = this.text.slice(lineStart)
+    getNextCaretPos (start) {
+      const before = this.text.slice(0, start)
+      const after = this.text.slice(start)
       const next = after.indexOf('\n')
       const final = (next !== -1) ? after.slice(0, next) : after
       const nextPos = final.search(/(\d\s)|(\d$)/)
