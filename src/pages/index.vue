@@ -39,7 +39,7 @@ export default {
       const label = line.slice(1).match(/\d+\s+(.+)/)
       return [line[0], value, label || '']
     },
-    parseGroups () {
+    parse () {
       this.lines = this.text.split(/\n/gus)
       let group = null
       let op, line, value, label
@@ -110,9 +110,24 @@ export default {
         this.sums.push(value)
       }
     },
-    setPadding () {
-      const lines = this.text.split(/\n/gus)
-      lines.forEach(())
+    leftPad (padding, value) {
+      value = value.toString()
+      const spaces = new Array(padding - 1).join(' ')
+      return `${spaces}${value}`.slice(value.length - spaces.length)
+    },
+    getPadding () {
+      let p = 6
+      let nlen, group
+      for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
+        group = this.groups[x]
+        for (let y = 0, ylen = group.length; y < ylen; y++) {
+          nlen = group[y][1].toString().length
+          if (nlen > p) {
+            p = nlen
+          }
+        }
+      }
+      return p
     },
     getNextCaretPos (start) {
       const before = this.text.slice(0, start)
