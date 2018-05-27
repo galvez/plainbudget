@@ -1,14 +1,20 @@
 <template>
   <div class="wrapper">
-    <textarea ref="ta" class="ta"
-      v-model="text"
-      @click="update"
-      @keyup.up="handler"
-      @keyup.down="handler">
-    </textarea>
+    <div class="ta-wrapper">
+      <div class="help">
+        click over the text area<br>
+        or hit <b>cmd/ctrl+enter</b>
+      </div>
+      <textarea ref="ta" class="ta"
+        v-model="text"
+        @click="update"
+        @keyup.up="handler"
+        @keyup.down="handler">
+      </textarea>
+    </div>
     <div class="doc">
       <p>For longer than I can remember, I have done all my personal budgeting 
-      using a script I wrote called <b class="mono">plainbudget</b>, which is 
+      using a script I wrote called <b class="pb">plainbudget</b>, which is 
       now presented here ported to JavaScript, built with <a href="https://nuxtjs.org/">Nuxt</a>.</p>
 
       <p>It's designed
@@ -274,6 +280,9 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
+.pb {
+  font-size: 24px !important;
+}
 .wrapper {
   width: 1440px;
   margin: 0 auto;
@@ -294,7 +303,7 @@ b.mono {
     font-family: 'Sorts Mill Goudy', serif;
     font-size: 20px;
     margin: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 20px;
     padding-bottom: 0px;
     padding-right: 200px;
@@ -321,17 +330,31 @@ b.mono {
     }
   }
 }
-.ta {
+.ta-wrapper {
+  position: relative;
   box-sizing: border-box;
   width: 45vw;
-  padding: 20px;
-  padding-left: 100px;
-  background: #f6f6f6;
-  height: 100vh;
-  overflow: scroll;
-  font-family: 'Fira Mono', monospace;
-  font-size: 20px;
-  border: none;
-  outline: none;
+  .help {
+    color: #555;
+    position: absolute;
+    font-size: 13px;
+    font-family: sans-serif;
+    width: 180px;
+    height: 50px;
+    top: 40px;
+    right: 30px;
+  }
+  .ta {
+    padding: 20px;
+    padding-left: 100px;
+    background: #f6f6f6;
+    height: 100vh;
+    width: calc(100% - 120px);
+    overflow: scroll;
+    font-family: 'Fira Mono', monospace;
+    font-size: 20px;
+    border: none;
+    outline: none;
+  }
 }
 </style>

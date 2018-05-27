@@ -1,5 +1,10 @@
 <template>
-  <nuxt />
+  <div class="main">
+    <a href="https://github.com/you">
+      <img class="github" src="~/assets/forkme.png" alt="Fork me on GitHub">
+    </a>
+    <nuxt />
+  </div>
 </template>
 
 <script>
@@ -8,6 +13,12 @@ export default {
 </script>
 
 <style>
+.github {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
 @font-face {
   font-family: 'Fira Mono';
   font-style: normal;
