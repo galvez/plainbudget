@@ -23,6 +23,9 @@ export default {
       text: null
     }
   },
+  mounted () {
+    window.app = this
+  },
   methods: {
     parseValue (line) {
       let value = line.slice(1).match(/\d+/)
@@ -39,10 +42,16 @@ export default {
       const label = line.slice(1).match(/\d+\s+(.+)/)
       return [line[0], value, label || '']
     },
+    parseMultiplier (label) {
+      const m = label.trim().match(/x\s+(\d+)$/)
+      if (m) {
+        return m[1]
+      }
+    },
     parse () {
-      this.lines = this.text.split(/\n/gus)
+      this.lines = this.text.split(/\n/)
       let group = null
-      let op, line, value, label
+      let op, line
       for (let i = 0, len = this.lines.length; i < len; i++) {
         line = this.lines[i].trim()
         op = line[0]
@@ -60,12 +69,14 @@ export default {
       }
     },
     calcGroups () {
-      let group      
-      let value
+      let group, value
+      let topOps, ops
+      let topOp, op
+      let multiplier
       for (let g = 0, glen = this.groups.length; g < glen; g++) {
         group = this.groups[g]
         if (group[0][0] === '=') {
-          if (group[0][2] == '') {
+          if (group[0][2] === '') {
             group[0][2] = '\n'
           }
           value = 0
@@ -75,9 +86,9 @@ export default {
             if (topOp[1] === '?' || topOp[0] === 'x') {
               continue
             }
-            multiplier = topOp[2].trim().match(/x\s+(\d+)$/)
+            multiplier = this.parseMultiplier(topOp[2])
             if (multiplier) {
-              value += topOp[1] * parseInt(multiplier[1])
+              value += topOp[1] * parseInt(multiplier)
             } else {
               value += topOp[1]
             }
@@ -91,9 +102,9 @@ export default {
               continue
             }
             if (op[0] === '+') {
-              multiplier = topOp[2].trim().match(/x\s+(\d+)$/)
+              multiplier = this.parseMultiplier(op[2])
               if (multiplier) {
-                value += op[1] * parseInt(multiplier[1])
+                value += op[1] * parseInt(multiplier)
               } else {
                 value += op[1]
               }
@@ -145,7 +156,6 @@ export default {
       if (currentPos === -1) {
         return
       }
-      const len = this.text.length - 1
       for (let p = currentPos; p > 0; p--) {
         if (this.text[p].match(/\n/)) {
           return p + 1
@@ -154,14 +164,15 @@ export default {
       return 0
     },
     handler () {
-      const curPos = this.$refs.ta.selectionStart
-      console.log('curPos', curPos)
-      const prevLB = this.findPreviousLB(curPos)
-      const newPos = this.getNextCaretPos(prevLB)
-      console.log('newPos', newPos)
-      this.$nextTick(() => {
-        this.$refs.ta.setSelectionRange(newPos, newPos)
-      })
+      return
+      // const curPos = this.$refs.ta.selectionStart
+      // console.log('curPos', curPos)
+      // const prevLB = this.findPreviousLB(curPos)
+      // const newPos = this.getNextCaretPos(prevLB)
+      // console.log('newPos', newPos)
+      // this.$nextTick(() => {
+      //   this.$refs.ta.setSelectionRange(newPos, newPos)
+      // })
     }
   }
 }

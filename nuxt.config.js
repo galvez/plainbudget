@@ -1,11 +1,9 @@
 require('dotenv').config()
 
-const path = require('path')
-
 module.exports = {
   env: {
     port: 4333,
-    baseUrl: process.env.BASE_URL || 'http://localhost:4333',
+    baseUrl: process.env.BASE_URL || 'http://localhost:4333'
   },
   router: {
     scrollBehavior (to, from, savedPosition) {
@@ -19,7 +17,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'Sales CMS.' }
-    ],
+    ]
   },
   plugins: [
     { src: '~/plugins/elementui', ssr: true }

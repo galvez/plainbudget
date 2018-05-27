@@ -4,13 +4,10 @@ const {
   Koa,
   parse,
   multipartParse,
-  jwtDecode,
   Nuxt,
   Builder,
   config
 } = require('./support')
-
-const fs = require('fs')
 
 const app = new Koa()
 app.proxy = true
