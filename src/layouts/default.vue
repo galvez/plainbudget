@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="wrapper">
     <a href="https://github.com/galvez/plainbudget">
       <img class="github" src="~/assets/forkme.png" alt="Fork me on GitHub">
     </a>
