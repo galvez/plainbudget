@@ -39,7 +39,7 @@ export default {
       for (let i = 0, len = this.lines.length; i < len; i++) {
         line = this.lines[i]
         op = line[0]
-        if ('=+'.includes(op) && group != null) {
+        if ('=+'.includes(op) && group !== null) {
           value = this.parseValueFromLine(line)
           label = line.slice(1).match(/\d+\s+(.+)/)
           group = [[line[0], value, label || '']]
@@ -56,7 +56,52 @@ export default {
       if (group !== null && this.groups.slice(-1) !== group) {
         this.groups.push(group)
       }
-    }
+    },
+    calcGroups () {
+      let group      
+      let value
+      for (let g = 0, glen = this.groups.length; g < glen; g++) {
+        group = this.groups[g]
+        if (group[0][0] === '=') {
+          if (group[0][2] == '') {
+            group[0][2] = '\n'
+          }
+          value = 0
+          topOps = group.slice(1)
+          for (let x = 0, xlen = topOps.length; x < xlen; x++) {
+            topOp = topOps[x]
+            if (topOp[1] === '?' || topOp[0] === 'x') {
+              continue
+            }
+            multiplier = topOp[2].trim().match(/x\s+(\d+)$/)
+            if (multiplier) {
+              value += topOp[1] * parseInt(multiplier[1])
+            } else {
+              value += topOp[1]
+            }
+          }
+        } else if (group[0][0] === '+') {
+          value = group[0][1]
+          ops = group.slice(1)
+          for (let y = 0, ylen = ops.length; y < ylen; y++) {
+            op = ops[y]
+            if (op[1] === '?' || op[0] === 'x') {
+              continue
+            }
+            if (op[0] === '+') {
+              multiplier = topOp[2].trim().match(/x\s+(\d+)$/)
+              if (multiplier) {
+                value += op[1] * parseInt(multiplier[1])
+              } else {
+                value += op[1]
+              }
+            } else if ('-~'.includes(op[0])) {
+              value -= op[1]
+            }
+          }
+        }
+      }
+    },
     parseLine (line) {
 
     },
@@ -84,7 +129,6 @@ export default {
       }
       const len = this.text.length - 1
       for (let p = currentPos; p > 0; p--) {
-        // console.log('this.text[p]', p, '-', this.text[p])
         if (this.text[p].match(/\n/)) {
           return p + 1
         }
