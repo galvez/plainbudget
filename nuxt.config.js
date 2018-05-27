@@ -1,6 +1,7 @@
 
 module.exports = {
   srcDir: 'src',
+  buildDir: 'docs',
   head: {
     title: 'Plainbudget',
     meta: [
@@ -15,7 +16,7 @@ module.exports = {
     ]
   },
   router: {
-    base: '/'
+    base: '/plainbudget/'
   },
   build: {
     // loaders: [
