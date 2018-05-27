@@ -1,7 +1,6 @@
 
 module.exports = {
   srcDir: 'src',
-  buildDir: 'docs',
   head: {
     title: 'Plainbudget',
     meta: [
@@ -11,6 +10,7 @@ module.exports = {
     ]
   },
   generate: {
+    dir: 'docs',
     routes: [
       '/'
     ]
