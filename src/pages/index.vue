@@ -301,6 +301,7 @@ b.mono {
 .doc {
   box-sizing: border-box;
   width: 55vw;
+  margin-bottom: 100px;
   p {
     font-family: 'Sorts Mill Goudy', serif;
     font-size: 20px;
