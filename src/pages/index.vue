@@ -5,10 +5,6 @@
     @keydown.native="handler"
     @keyup.up="handler"
     @keyup.down="handler">
-    +  1000 Salary
-    -   500 Expense A
-    -   200 Expense B
-    -   100 Expense C
   </textarea>
 </template>
 
@@ -20,7 +16,11 @@ export default {
       lines: [],
       groups: [],
       sums: [],
-      text: null
+      text: `
++  1000 Salary
+-   500 Expense A
+-   200 Expense B
+-   100 Expense C`.trim()
     }
   },
   mounted () {
@@ -39,8 +39,9 @@ export default {
     },
     parseLine (line) {
       const value = this.parseValue(line)
-      const label = line.slice(1).match(/\d+\s+(.+)/)
-      return [line[0], value, label || '']
+      let label = line.slice(1).match(/\d+\s+(.+)/)
+      label = label ? label[1] : ''
+      return [line[0], value, label]
     },
     parseMultiplier (label) {
       const m = label.trim().match(/x\s+(\d+)$/)
@@ -48,14 +49,24 @@ export default {
         return m[1]
       }
     },
+    groupEquals (groupA, groupB) {
+      return (
+        groupA[0] === groupB[0] &&
+        groupA[1] === groupB[1] &&
+        groupA[2] === groupB[2]
+      )
+    },
     parse () {
       this.lines = this.text.split(/\n/)
+      // console.log('this.lines', this.lines)
       let group = null
       let op, line
       for (let i = 0, len = this.lines.length; i < len; i++) {
-        line = this.lines[i].trim()
+        line = this.lines[i]
+        // console.log('line', line)
         op = line[0]
-        if ('=+'.includes(op) && group !== null) {
+        // console.log('op', op)
+        if ('=+'.includes(op) && group === null) {
           group = [this.parseLine(line)]
         } else if ('-~+x'.includes(op)) {
           group.push(this.parseLine(line))
@@ -64,11 +75,26 @@ export default {
           group = null
         }
       }
-      if (group !== null && this.groups.slice(-1) !== group) {
+      if (group !== null && !this.groupEquals(this.groups.slice(-1), group)) {
         this.groups.push(group)
       }
     },
-    calcGroups () {
+    update () {
+      const updated = ['\n']
+      let group, op
+      for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
+        group = this.groups[x]
+        for (let y = 0, ylen = group.length; y < ylen; y++) {
+          op = group[y]
+          updated.push(`${op[0]} ${op[1]} ${op[2]}`)
+        }
+        if (x < xlen - 1) {
+          updated.push('\n')
+        }
+      }
+      this.text = updated.join('\n')
+    },
+    calc () {
       let group, value
       let topOps, ops
       let topOp, op
@@ -164,7 +190,9 @@ export default {
       return 0
     },
     handler () {
-      return
+      this.parse()
+      // this.calc()
+      // this.update()
       // const curPos = this.$refs.ta.selectionStart
       // console.log('curPos', curPos)
       // const prevLB = this.findPreviousLB(curPos)
