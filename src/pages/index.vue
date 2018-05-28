@@ -94,7 +94,6 @@ export default {
     }
   },
   mounted () {
-    window.app = this
     document.body.addEventListener('keydown', this.cmdEnterHandler)
   },
   methods: {
@@ -130,14 +129,11 @@ export default {
     parse () {
       this.groups = []
       this.lines = this.text.split(/\n/)
-      // console.log('this.lines', this.lines)
       let group = null
       let op, line
       for (let i = 0, len = this.lines.length; i < len; i++) {
         line = this.lines[i].trim()
-        // console.log('line', line)
         op = line[0]
-        // console.log('op', op)
         if ('=+'.includes(op) && group === null) {
           group = [this.parseLine(line)]
         } else if ('-~+x'.includes(op)) {
