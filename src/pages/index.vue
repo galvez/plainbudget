@@ -40,8 +40,8 @@
 -  500 Expenses A
 -  200 Expenses B
 =  300
-</div>
-</div>
+        </div>
+      </div>
 
       <p>An <b>expenses</b> value group can be used to simply calculate a series
       of expenses. These groups always start with a <b class="mono">=</b> 
@@ -53,15 +53,19 @@
           <h2>Input</h2>
 = Expenses A
 - 300 Car payment
+- 100 Plane ticket x 2
 - 200 Utilities bill
         </div>
         <div class="output">
           <h2>Output</h2>
-=   500 Expenses A
+=   700 Expenses A
 -   300 Car payment
+-   100 Plane ticket x 2
 -   200 Utilities bill
-</div>
-</div>
+        </div>
+      </div>
+
+      <p>You can use <b class="mono">x [number]</b> to multiply a value.</p>
 
       <p>This is a <a href="http://github.com/galvez/plainbudget">work in 
       progress</a>. The goal is to turn this into a web application where an user 
@@ -83,12 +87,13 @@ export default {
       sums: [],
       text: `
 + 1000 Salary
-- 500 Expense A
+- 700 Expense A
 - 200 Expense B
 - 100 Expense C
 
 = Expense A
 - 300 Car payment
+- 100 Plane ticket x 2
 - 200 Utilities bill
 `
     }
