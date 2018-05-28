@@ -204,7 +204,12 @@ export default {
                 value += op[1]
               }
             } else if ('-~'.includes(op[0])) {
-              value -= op[1]
+              multiplier = this.parseMultiplier(op[2])
+              if (multiplier) {
+                value -= op[1] * parseInt(multiplier)
+              } else {
+                value -= op[1]
+              }
             }
           }
         }
