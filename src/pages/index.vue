@@ -35,17 +35,22 @@
         </div>
         <div class="output">
           <h2>Output</h2>
-+  400 Salary
++ 1000 Salary
 -  200 Named Expense
 -  200 Expenses B
-=  300
+=  600
+
+=   200 Named Expense
+-   100 Expense X
+-   100 Expense Y
         </div>
       </div>
 
       <p>An <b>expenses</b> value group can be used to simply calculate a series
       of expenses. These groups always start with a <b class="mono">=</b> 
       operation, followed by one or more <b class="mono">-</b> operations. Calculating
-      an <b>expenses</b> group adds the result <b>right at the top</b>:</p>
+      an <b>expenses</b> group adds the result <b>right at the top</b> and will 
+      <b>register</b> the group so that <b>it can be referenced in cashflow groups</b>.</p>
 
       <div class="example">
         <div class="input">
@@ -64,7 +69,8 @@
         </div>
       </div>
 
-      <p>You can use <b class="mono">x [number]</b> to multiply a value.</p>
+      <p>That's why <b>expense groups</b> will always be calculated first.</p>
+      <p>You can also use <b class="mono">x [number]</b> to multiply a value.</p>
 
       <p>This is a <a href="http://github.com/galvez/plainbudget">work in 
       progress</a>. The goal is to turn this into a web application where an user 
