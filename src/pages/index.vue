@@ -26,13 +26,17 @@
         <div class="input">
           <h2>Input</h2>
 + 1000 Salary
-- 500 Expenses A
+- Named Expense
 - 200 Expenses B
+
+= Named Expense
+- 100 Expense X
+- 100 Expense Y
         </div>
         <div class="output">
           <h2>Output</h2>
-+ 1000 Salary
--  500 Expenses A
++  400 Salary
+-  200 Named Expense
 -  200 Expenses B
 =  300
         </div>

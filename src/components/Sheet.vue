@@ -17,11 +17,11 @@ export default {
       named: {},
       text: `
 + 1000 Salary
-- 700 Expense A
+- Recurring
 - 200 Expense B
 - 100 Expense C
 
-= Expense A
+= Recurring
 - 300 Car payment
 - 100 Plane ticket x 2
 - 200 Utilities bill
