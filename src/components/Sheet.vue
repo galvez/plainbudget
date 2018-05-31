@@ -70,7 +70,7 @@ export default {
       for (let i = 0, len = this.lines.length; i < len; i++) {
         line = this.lines[i].trim()
         op = line[0]
-        if ('=+$'.includes(op) && group === null) {
+        if ('=+'.includes(op) && group === null) {
           group = [this.parseLine(line)]
         } else if ('-~+x'.includes(op)) {
           group.push(this.parseLine(line))
@@ -86,14 +86,14 @@ export default {
     update () {
       this.parse()
       this.calc(this.groups.reduce((arr, g, i) => {
-        if (g[0][0] === '$') {
+        if (g[0][0] === '=') {
           return arr.concat([i])
         } else {
           return arr
         }
       }, []))
       this.calc(this.groups.reduce((arr, g, i) => {
-        if (g[0][0] !== '$') {
+        if (g[0][0] !== '=') {
           return arr.concat([i])
         } else {
           return arr
@@ -130,8 +130,7 @@ export default {
       let varMatch
       for (let g = 0, glen = groupIndices.length; g < glen; g++) {
         group = this.groups[groupIndices[g]]
-        console.log('group', JSON.stringify(group))
-        if ('=$'.includes(group[0][0])) {
+        if ('='.includes(group[0][0])) {
           if (group[0][2] === '') {
             group[0][2] = '\n'
           }
@@ -179,24 +178,23 @@ export default {
         }
         if (group[0][0] === '=') {
           group[0][1] = value
-        } else if (group[0][0] === '$') {
-          group[0][1] = value
-          this.named[group[0][2]] = value
+          this.named[group[0][2]] = value 
         } else {
           group.push(['=', value, ''])
         }
-        console.log('group', JSON.stringify(group))
       }
     },
     getPadding () {
-      let p = 4
+      let p = 3
       let nlen, group
       for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
         group = this.groups[x]
         for (let y = 0, ylen = group.length; y < ylen; y++) {
-          nlen = group[y][1].toString().length
-          if (nlen > p) {
-            p = nlen + 1
+          if (group[y].length > 1) {
+            nlen = group[y][1].toString().length
+            if (nlen > p) {
+              p = nlen + 1
+            }
           }
         }
       }
