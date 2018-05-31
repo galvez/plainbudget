@@ -8,7 +8,7 @@
 </template>
 
 <script>
-const NAME_REGEX = /^[a-z][a-z0-9\/\-. ]+$/i
+const NAME_REGEX = /^[a-z0-9\/\-. ]+$/i
 export default {
   data () {
     return {
