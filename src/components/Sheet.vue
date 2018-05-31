@@ -190,7 +190,7 @@ export default {
       for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
         group = this.groups[x]
         for (let y = 0, ylen = group.length; y < ylen; y++) {
-          if (group[y].length > 1) {
+          if (group[y][1] !== null) {
             nlen = group[y][1].toString().length
             if (nlen > p) {
               p = nlen + 1
