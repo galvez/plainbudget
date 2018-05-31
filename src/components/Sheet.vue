@@ -8,12 +8,13 @@
 </template>
 
 <script>
+const NAME_REGEX = /^[a-z][a-z0-9\/\-. ]+$/i
 export default {
   data () {
     return {
       lines: [],
       groups: [],
-      sums: [],
+      named: {},
       text: `
 + 1000 Salary
 - 700 Expense A
@@ -28,6 +29,7 @@ export default {
     }
   },
   mounted () {
+    window.app = this
     document.body.addEventListener('keydown', this.cmdEnterHandler)
   },
   methods: {
@@ -68,7 +70,7 @@ export default {
       for (let i = 0, len = this.lines.length; i < len; i++) {
         line = this.lines[i].trim()
         op = line[0]
-        if ('=+'.includes(op) && group === null) {
+        if ('=+$'.includes(op) && group === null) {
           group = [this.parseLine(line)]
         } else if ('-~+x'.includes(op)) {
           group.push(this.parseLine(line))
@@ -83,7 +85,20 @@ export default {
     },
     update () {
       this.parse()
-      this.calc()
+      this.calc(this.groups.reduce((arr, g, i) => {
+        if (g[0][0] === '$') {
+          return arr.concat([i])
+        } else {
+          return arr
+        }
+      }, []))
+      this.calc(this.groups.reduce((arr, g, i) => {
+        if (g[0][0] !== '$') {
+          return arr.concat([i])
+        } else {
+          return arr
+        }
+      }, []))
       const padding = this.getPadding()
       const updated = []
       let group, op
@@ -97,14 +112,26 @@ export default {
       }
       this.text = `\n${updated.join('').trim()}\n`
     },
-    calc () {
+    checkNamed (value, label) {
+      const varMatch = label.match(NAME_REGEX)
+      if (varMatch && label in this.named) {
+        return this.named[label]
+      }
+      return value
+    },
+    calc (groupIndices) {
+      if (!groupIndices.length) {
+        return
+      }
       let group, value
       let topOps, ops
       let topOp, op
       let multiplier
-      for (let g = 0, glen = this.groups.length; g < glen; g++) {
-        group = this.groups[g]
-        if (group[0][0] === '=') {
+      let varMatch
+      for (let g = 0, glen = groupIndices.length; g < glen; g++) {
+        group = this.groups[groupIndices[g]]
+        console.log('group', JSON.stringify(group))
+        if ('=$'.includes(group[0][0])) {
           if (group[0][2] === '') {
             group[0][2] = '\n'
           }
@@ -115,6 +142,7 @@ export default {
             if (topOp[1] === '?' || topOp[0] === 'x') {
               continue
             }
+            topOp[1] = this.checkNamed(topOp[1], topOp[2])
             multiplier = this.parseMultiplier(topOp[2])
             if (multiplier) {
               value += topOp[1] * parseInt(multiplier)
@@ -131,6 +159,7 @@ export default {
               continue
             }
             if (op[0] === '+') {
+              op[1] = this.checkNamed(op[1], op[2])
               multiplier = this.parseMultiplier(op[2])
               if (multiplier) {
                 value += op[1] * parseInt(multiplier)
@@ -138,6 +167,7 @@ export default {
                 value += op[1]
               }
             } else if ('-~'.includes(op[0])) {
+              op[1] = this.checkNamed(op[1], op[2])
               multiplier = this.parseMultiplier(op[2])
               if (multiplier) {
                 value -= op[1] * parseInt(multiplier)
@@ -149,10 +179,13 @@ export default {
         }
         if (group[0][0] === '=') {
           group[0][1] = value
+        } else if (group[0][0] === '$') {
+          group[0][1] = value
+          this.named[group[0][2]] = value
         } else {
           group.push(['=', value, ''])
         }
-        this.sums.push(value)
+        console.log('group', JSON.stringify(group))
       }
     },
     getPadding () {
@@ -175,5 +208,5 @@ export default {
       }
     }
   }
-]
+}
 </script>
