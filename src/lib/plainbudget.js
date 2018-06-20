@@ -1,5 +1,5 @@
 
-const NAME_REGEX = /^[a-z0-9\/\-. ]+$/i
+const NAME_REGEX = /^[a-z0-9/-. ]+$/i
 
 export class Plainbudget {
 
@@ -118,7 +118,6 @@ export class Plainbudget {
     let topOps, ops
     let topOp, op
     let multiplier
-    let varMatch
     for (let g = 0, glen = groupIndices.length; g < glen; g++) {
       group = this.groups[groupIndices[g]]
       if ('='.includes(group[0][0])) {
@@ -169,7 +168,7 @@ export class Plainbudget {
       }
       if (group[0][0] === '=') {
         group[0][1] = value
-        this.named[group[0][2]] = value 
+        this.named[group[0][2]] = value
       } else {
         group.push(['=', value, ''])
       }

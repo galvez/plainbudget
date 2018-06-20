@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require('fs')
 const sade = require('sade')
 const { Plainbudget } = require('lib/plainbudget')
 const pbudget = sade('pbudget')
@@ -13,6 +14,7 @@ pbudget
   .describe('Computes a plain text values sheet.')
   .example('cat spreadsheet.txt | pbudget [-s] > updated.txt')
   .action((src, options) => {
+    let text
     if (!src) {
       text = process.stdin.read()
     } else {
