@@ -1,3 +1,4 @@
+const path = require('path')
 
 module.exports = {
   srcDir: 'src',
@@ -19,6 +20,15 @@ module.exports = {
     base: '/plainbudget/'
   },
   build: {
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [
+          path.resolve('src')
+        ]
+      }
+    ],
     // loaders: [
     //   {
     //     test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
