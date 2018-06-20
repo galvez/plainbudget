@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const sade = require('sade')
-const { Plainbudget } = require('./pbudget')
+const Plainbudget = require('./pbudget')
 const pbudget = sade('pbudget')
 
 pbudget
@@ -16,19 +16,24 @@ pbudget
   .action((src, options) => {
     let text
     if (!src) {
-      text = process.stdin.read()
+      text = fs.readFileSync('/dev/stdin').toString()
     } else {
       text = fs.readFileSync(src, 'utf8')
+    }
+    if (!text) {
+      console.log('No source file provided.')
+      process.exit(1)
     }
     try {
       const computed = Plainbudget.compute(text)
       if (src && options.s) {
-        fs.writeFileSync(src, computed, 'utf8')
+        fs.writeFileSync(src, `${computed}\n`, 'utf8')
       } else {
         process.stdout.write(`${computed}\n`)
       }
     } catch (err) {
-      throw new Error('Error computing source file.')
+      console.log('Error computing source file.')
+      process.exit(1)
     }
   })
 
