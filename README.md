@@ -3,6 +3,7 @@
 ```sh
 npm install pbudget -g
 ```
+
 See [http://galvez.github.io/plainbudget](http://galvez.github.io/plainbudget) for details.
 
 # CLI
