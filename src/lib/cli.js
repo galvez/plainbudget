@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
-const sade = require('sade')
+const pbudget = require('commander')
 const { Plainbudget } = require('./pbudget')
-const pbudget = sade('pbudget')
 
 pbudget
   .version('0.1.0')
-  .option('--save, -s', 'Modify input file')
+  .option('--save, -s', 'modifies src file after compute')
 
 pbudget
-  .command('pbudget [src]')
-  .describe('Computes a plain text values sheet.')
-  .example('cat spreadsheet.txt | pbudget [-s] > updated.txt')
+  .arguments('[src]')
+  .description('computes a plain text sheet')
   .action((src, options) => {
     let text
     if (!src) {
@@ -37,10 +35,4 @@ pbudget
     }
   })
 
-const injectArgv = (argv) => {
-  argv = [ ...argv ]
-  argv.splice(2, 0, 'pbudget')
-  return argv
-}
-
-pbudget.parse(injectArgv(process.argv))
+pbudget.parse(process.argv)
