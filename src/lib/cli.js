@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const sade = require('sade')
-const { Plainbudget } = require('pbudget')
+const { Plainbudget } = require('./pbudget')
 const pbudget = sade('pbudget')
 
 pbudget
