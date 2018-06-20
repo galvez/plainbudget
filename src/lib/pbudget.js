@@ -1,7 +1,7 @@
 
 const NAME_REGEX = /^[a-z0-9\-.\/]+$/i // eslint-disable-line
 
-module.exports = class Plainbudget {
+class Plainbudget {
 
   static compute (text) {
     const pb = new Plainbudget(text)
@@ -193,3 +193,5 @@ module.exports = class Plainbudget {
   }
 
 }
+
+module.exports = { Plainbudget }

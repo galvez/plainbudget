@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Plainbudget from '@/lib/pbudget'
+import { Plainbudget } from '@/lib/pbudget-es6'
 
 export default {
   data () {
