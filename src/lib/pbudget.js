@@ -19,7 +19,7 @@ class Plainbudget {
         return { ...obj, [s]: pb }
       }, {})
     return Object.keys(instances)
-      reduce((obj, key) => {
+      .reduce((obj, key) => {
         const i = instances[key]
         i.named = allNamed
         i.calcFlows()
