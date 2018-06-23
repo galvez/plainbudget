@@ -8,6 +8,30 @@ pbudget
   .version('0.1.0')
   .option('--save, -s', 'modifies src file after compute')
 
+const computeAll = (srcs, options = {}) => {
+  try {
+    const computedSrcs = Plainbudget.computeSheets(
+      srcs.reduce((obj, src) => {
+        return { ...obj, [src]: fs.readFileSync(src, 'utf8') }
+      }, [])
+    )
+    Object.keys(computedSrcs)
+      .forEach((src) => {
+        const computed = computedSrcs[src]
+        if (src && options.s) {
+          fs.writeFileSync(src, `${computed}\n`, 'utf8')
+        } else {
+          process.stdout.write(`${computed.trimRight()}\n`)
+        }
+      })
+    process.stdout.write('\n')
+    process.exit(0)
+  } catch (err) {
+    console.log('Error computing source')
+    process.exit(0)
+  }
+}
+
 const compute = (src, text, options = {}) => {
   try {
     if (!text) {
@@ -19,9 +43,13 @@ const compute = (src, text, options = {}) => {
       fs.writeFileSync(src, `${computed}\n`, 'utf8')
     } else {
       process.stdout.write(`${computed}\n`)
+      process.exit(0)
     }
   } catch (err) {
-    console.log('Error computing source file.')
+    console.log(!src
+      ? 'Error computing source'
+      : `Error computing source file: ${src}`
+    )
     process.exit(1)
   }
 }
@@ -31,10 +59,14 @@ const computeFromStdin = (text, options = {}) => {
 }
 
 pbudget
-  .arguments('[src]')
+  .arguments('[src] [otherSrcs...]')
   .description('computes a plain text sheet')
-  .action((src, options) => {
-    compute(src, fs.readFileSync(src, 'utf8'), options)
+  .action((src, otherSrcs, options) => {
+    if (otherSrcs.length) {
+      computeAll([src, ...otherSrcs])
+    } else {
+      compute(src, fs.readFileSync(src, 'utf8'), options)
+    }
   })
 
 const instance = pbudget.parse(process.argv)

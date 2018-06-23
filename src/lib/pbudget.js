@@ -12,7 +12,7 @@ class Plainbudget {
     let allNamed = {}
     const instances = Object.keys(sheets)
       .reduce((obj, s) => {
-        const pb = new Plainbudget(sheets[t])
+        const pb = new Plainbudget(sheets[s])
         pb.parse()
         pb.calcNamed()
         allNamed = { ...allNamed, ...pb.named }
@@ -24,8 +24,8 @@ class Plainbudget {
         i.named = allNamed
         i.calcFlows()
         i.compute(false)
-        return { [i]: i.text }
-      })
+        return { ...obj, [key]: i.text }
+      }, {})
   }
 
   constructor (text) {
