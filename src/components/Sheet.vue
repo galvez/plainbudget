@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     update () {
-      this.text = Plainbudget.compute(this.text)
+      this.text = Plainbudget.computeSheet(this.text)
     },
     cmdEnterHandler (ev) {
       if ((ev.metaKey || ev.ctrlKey) && ev.keyCode === 13) {

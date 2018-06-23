@@ -1,14 +1,38 @@
 
-const NAME_REGEX = /^[a-z0-9\-.\/]+$/i // eslint-disable-line
+const NAME_REGEX = /^[a-z0-9\-.\/ ]+$/i // eslint-disable-line
 
 class Plainbudget {
 
-  static compute (text) {
-    const pb = new Plainbudget(text)
-    return pb.update()
+  static computeSheet (sheet) {
+    const pb = new Plainbudget(sheet)
+    return pb.compute()
+  }
+
+  static computeSheets (sheets) {
+    let allNamed = {}
+    let allGroups = []
+    const instances = Object.keys(sheets)
+      .reduce((obj, s) => {
+        const pb = new Plainbudget(sheets[s])
+        pb.parse()
+        pb.calcNamed()
+        allGroups.splice(allGroups.length, 0, ...pb.groups)
+        allNamed = { ...allNamed, ...pb.named }
+        return { ...obj, [s]: pb }
+      }, {})
+    return Object.keys(instances)
+      .reduce((obj, key) => {
+        const i = instances[key]
+        i.named = allNamed
+        i.padding = i.getPadding(allGroups)
+        i.calcFlows()
+        i.compute(false)
+        return { ...obj, [key]: i.text }
+      }, {})
   }
 
   constructor (text) {
+    this.padding = 3
     this.lines = []
     this.groups = []
     this.named = {}
@@ -71,23 +95,13 @@ class Plainbudget {
     }
   }
 
-  update () {
-    this.parse()
-    this.calc(this.groups.reduce((arr, g, i) => {
-      if (g[0][0] === '=') {
-        return arr.concat([i])
-      } else {
-        return arr
-      }
-    }, []))
-    this.calc(this.groups.reduce((arr, g, i) => {
-      if (g[0][0] !== '=') {
-        return arr.concat([i])
-      } else {
-        return arr
-      }
-    }, []))
-    const padding = this.getPadding()
+  compute (calc = true) {
+    if (calc) {
+      this.parse()
+      this.calcNamed()
+      this.calcFlows()
+    }
+    const padding = Math.max(this.padding, this.getPadding())
     const updated = []
     let group, op
     for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
@@ -108,6 +122,26 @@ class Plainbudget {
       return this.named[label]
     }
     return value
+  }
+
+  calcNamed () {
+    this.calc(this.groups.reduce((arr, g, i) => {
+      if (g[0][0] === '=') {
+        return arr.concat([i])
+      } else {
+        return arr
+      }
+    }, []))
+  }
+
+  calcFlows () {
+    this.calc(this.groups.reduce((arr, g, i) => {
+      if (g[0][0] !== '=') {
+        return arr.concat([i])
+      } else {
+        return arr
+      }
+    }, []))
   }
 
   calc (groupIndices) {
@@ -175,21 +209,22 @@ class Plainbudget {
     }
   }
 
-  getPadding () {
+  getPadding (groups) {
+    groups = groups || this.groups
     let p = 3
     let nlen, group
-    for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
-      group = this.groups[x]
+    for (let x = 0, xlen = groups.length; x < xlen; x++) {
+      group = groups[x]
       for (let y = 0, ylen = group.length; y < ylen; y++) {
         if (group[y][1] !== null) {
           nlen = group[y][1].toString().length
-          if (nlen > p) {
+          if (nlen > (p + 1)) {
             p = nlen + 1
           }
         }
       }
     }
-    return p
+    return p + 1
   }
 
 }
