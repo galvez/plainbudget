@@ -18,13 +18,15 @@ const computeAll = (srcs, options = {}) => {
     Object.keys(computedSrcs)
       .forEach((src) => {
         const computed = computedSrcs[src]
-        if (src && options.s) {
+        if (src && options.S) {
           fs.writeFileSync(src, `${computed}\n`, 'utf8')
         } else {
           process.stdout.write(`${computed.trimRight()}\n`)
         }
       })
-    process.stdout.write('\n')
+    if (!options.S) {
+      process.stdout.write('\n')
+    }
     process.exit(0)
   } catch (err) {
     console.log('Error computing source')
@@ -39,8 +41,9 @@ const compute = (src, text, options = {}) => {
       process.exit(1)
     }
     const computed = Plainbudget.computeSheet(text)
-    if (src && options.s) {
+    if (src && options.S) {
       fs.writeFileSync(src, `${computed}\n`, 'utf8')
+      process.exit(0)
     } else {
       process.stdout.write(`${computed}\n`)
       process.exit(0)
@@ -63,7 +66,7 @@ pbudget
   .description('computes a plain text sheet')
   .action((src, otherSrcs, options) => {
     if (otherSrcs.length) {
-      computeAll([src, ...otherSrcs])
+      computeAll([src, ...otherSrcs], options)
     } else {
       compute(src, fs.readFileSync(src, 'utf8'), options)
     }
