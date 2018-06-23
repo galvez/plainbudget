@@ -1,11 +1,31 @@
 
-const NAME_REGEX = /^[a-z0-9\-.\/]+$/i // eslint-disable-line
+const NAME_REGEX = /^[a-z0-9\-.\/ ]+$/i // eslint-disable-line
 
 class Plainbudget {
 
-  static compute (text) {
-    const pb = new Plainbudget(text)
-    return pb.update()
+  static computeSheet (sheet) {
+    const pb = new Plainbudget(sheet)
+    return pb.compute()
+  }
+
+  static computeSheets (sheets) {
+    let allNamed = {}
+    const instances = Object.keys(sheets)
+      .reduce((obj, s) => {
+        const pb = new Plainbudget(sheets[t])
+        pb.parse()
+        pb.calcNamed()
+        allNamed = { ...allNamed, ...pb.named }
+        return { ...obj, [s]: pb }
+      }, {})
+    return Object.keys(instances)
+      reduce((obj, key) => {
+        const i = instances[key]
+        i.named = allNamed
+        i.calcFlows()
+        i.compute(false)
+        return { [i]: i.text }
+      })
   }
 
   constructor (text) {
@@ -71,22 +91,12 @@ class Plainbudget {
     }
   }
 
-  update () {
-    this.parse()
-    this.calc(this.groups.reduce((arr, g, i) => {
-      if (g[0][0] === '=') {
-        return arr.concat([i])
-      } else {
-        return arr
-      }
-    }, []))
-    this.calc(this.groups.reduce((arr, g, i) => {
-      if (g[0][0] !== '=') {
-        return arr.concat([i])
-      } else {
-        return arr
-      }
-    }, []))
+  compute (calc = true) {
+    if (calc) {
+      this.parse()
+      this.calcNamed()
+      this.calcFlows()
+    }
     const padding = this.getPadding()
     const updated = []
     let group, op
@@ -108,6 +118,26 @@ class Plainbudget {
       return this.named[label]
     }
     return value
+  }
+
+  calcNamed () {
+    this.calc(this.groups.reduce((arr, g, i) => {
+      if (g[0][0] === '=') {
+        return arr.concat([i])
+      } else {
+        return arr
+      }
+    }, []))
+  }
+
+  calcFlows () {
+    this.calc(this.groups.reduce((arr, g, i) => {
+      if (g[0][0] !== '=') {
+        return arr.concat([i])
+      } else {
+        return arr
+      }
+    }, []))
   }
 
   calc (groupIndices) {
@@ -194,4 +224,8 @@ class Plainbudget {
 
 }
 
-module.exports = { Plainbudget }
+if (typeof this.define !== 'undefined' && this.define.amd) {
+  this.define([], { Plainbudget })
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { Plainbudget }
+}
