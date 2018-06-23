@@ -10,10 +10,12 @@ class Plainbudget {
 
   static computeSheets (sheets) {
     let allNamed = {}
+    let padding = 0
     const instances = Object.keys(sheets)
       .reduce((obj, s) => {
         const pb = new Plainbudget(sheets[s])
         pb.parse()
+        padding = Math.max(padding, pb.getPadding())
         pb.calcNamed()
         allNamed = { ...allNamed, ...pb.named }
         return { ...obj, [s]: pb }
@@ -22,6 +24,7 @@ class Plainbudget {
       .reduce((obj, key) => {
         const i = instances[key]
         i.named = allNamed
+        i.padding = padding
         i.calcFlows()
         i.compute(false)
         return { ...obj, [key]: i.text }
@@ -97,7 +100,7 @@ class Plainbudget {
       this.calcNamed()
       this.calcFlows()
     }
-    const padding = this.getPadding()
+    const padding = this.padding || this.getPadding()
     const updated = []
     let group, op
     for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
@@ -213,7 +216,7 @@ class Plainbudget {
       for (let y = 0, ylen = group.length; y < ylen; y++) {
         if (group[y][1] !== null) {
           nlen = group[y][1].toString().length
-          if (nlen > p) {
+          if (nlen > (p + 1)) {
             p = nlen + 1
           }
         }
