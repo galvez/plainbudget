@@ -229,11 +229,4 @@ class Plainbudget {
 
 }
 
-if (typeof this.define !== 'undefined' && this.define.amd) {
-  console.log('xyz')
-  this.define('Plainbudget', [], function () {
-    return Plainbudget
-  })
-} else if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { Plainbudget }
-}
+module.exports = { Plainbudget }

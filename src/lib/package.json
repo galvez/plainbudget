@@ -1,6 +1,6 @@
 {
   "name": "pbudget",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Jonas Galvez <jonasgalvez@gmail.com>",
   "license": "MIT",
   "description": "Minimalist plain text spreasheet calculator",
