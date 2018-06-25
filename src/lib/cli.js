@@ -9,7 +9,7 @@ pbudget
   .option('--save, -s', 'modifies src file after compute')
 
 const computeAll = (srcs, options = {}) => {
-  try {
+  // try {
     const computedSrcs = Plainbudget.computeSheets(
       srcs.reduce((obj, src) => {
         return { ...obj, [src]: fs.readFileSync(src, 'utf8') }
@@ -28,10 +28,10 @@ const computeAll = (srcs, options = {}) => {
       process.stdout.write('\n')
     }
     process.exit(0)
-  } catch (err) {
-    console.log('Error computing source')
-    process.exit(0)
-  }
+  // } catch (err) {
+  //   console.log('Error computing source')
+  //   process.exit(0)
+  // }
 }
 
 const compute = (src, text, options = {}) => {
