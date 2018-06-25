@@ -1,5 +1,6 @@
 
-const NAME_REGEX = /^[a-z0-9\-.\/ ]+$/i // eslint-disable-line
+const NAME_REGEX = /^([a-z0-9\-.\/ ]+)$/i // eslint-disable-line
+const MULTIPLIER_REGEX = /^(.*?)\s+x\s+(\d+)$/
 
 class Plainbudget {
 
@@ -40,9 +41,9 @@ class Plainbudget {
   }
 
   parseValue (line) {
-    let value = line.slice(1).match(/\d+/)
+    let value = line.slice(1).match(/^\s+(\d+)/)
     if (value) {
-      value = parseInt(value[0])
+      value = parseInt(value[1])
       if (isNaN(value)) {
         value = '?'
       }
@@ -58,9 +59,9 @@ class Plainbudget {
   }
 
   parseMultiplier (label) {
-    const m = label.trim().match(/x\s+(\d+)$/)
+    const m = label.trim().match(MULTIPLIER_REGEX)
     if (m) {
-      return m[1]
+      return [m[1], m[2]]
     }
   }
 
@@ -116,10 +117,24 @@ class Plainbudget {
     return this.text
   }
 
-  checkNamed (value, label) {
+  setNamed (label, value) {
     const varMatch = label.match(NAME_REGEX)
-    if (varMatch && label in this.named) {
-      return this.named[label]
+    if (varMatch) {
+      label = varMatch[1]
+      this.named[label] = value
+    }    
+  }
+
+  getNamed (label, value) {
+    if (label.match(MULTIPLIER_REGEX)) {
+      label = label.split(/\s+x\s+/)[0]
+    }
+    const varMatch = label.match(NAME_REGEX)
+    if (varMatch) {
+      label = varMatch[1]
+      if (label in this.named) {
+        return this.named[label]
+      }
     }
     return value
   }
@@ -165,13 +180,11 @@ class Plainbudget {
           if (topOp[1] === '?' || topOp[0] === 'x') {
             continue
           }
-          topOp[1] = this.checkNamed(topOp[1], topOp[2])
           multiplier = this.parseMultiplier(topOp[2])
-          if (multiplier) {
-            value += topOp[1] * parseInt(multiplier)
-          } else {
-            value += topOp[1]
-          }
+          topOp[1] = this.getNamed(multiplier ? multiplier[0] : topOp[2], topOp[1])
+          value += multiplier
+            ? topOp[1] * parseInt(multiplier[1])
+            : topOp[1]
         }
       } else if (group[0][0] === '+') {
         value = group[0][1]
@@ -182,27 +195,23 @@ class Plainbudget {
             continue
           }
           if (op[0] === '+') {
-            op[1] = this.checkNamed(op[1], op[2])
             multiplier = this.parseMultiplier(op[2])
-            if (multiplier) {
-              value += op[1] * parseInt(multiplier)
-            } else {
-              value += op[1]
-            }
+            op[1] = this.getNamed(multiplier ? multiplier[0] : op[2], op[1])
+            value += multiplier
+              ? op[1] * parseInt(multiplier[1])
+              : op[1]
           } else if ('-~'.includes(op[0])) {
-            op[1] = this.checkNamed(op[1], op[2])
             multiplier = this.parseMultiplier(op[2])
-            if (multiplier) {
-              value -= op[1] * parseInt(multiplier)
-            } else {
-              value -= op[1]
-            }
+            op[1] = this.getNamed(multiplier ? multiplier[0] : op[2], op[1])
+            value -= multiplier
+              ? op[1] * parseInt(multiplier[1])
+              : op[1]
           }
         }
       }
       if (group[0][0] === '=') {
         group[0][1] = value
-        this.named[group[0][2]] = value
+        this.setNamed(group[0][2], value)
       } else {
         group.push(['=', value, ''])
       }
