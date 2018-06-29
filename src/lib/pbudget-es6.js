@@ -181,10 +181,12 @@ class Plainbudget {
             continue
           }
           multiplier = this.parseMultiplier(topOp[2])
-          topOp[1] = this.getNamed(multiplier ? multiplier[0] : topOp[2], topOp[1])
-          value += multiplier
-            ? topOp[1] * parseInt(multiplier[1])
-            : topOp[1]
+          if (multiplier) {
+            topOp[1] = this.getNamed(multiplier[0], topOp[1]) * parseInt(multiplier[1])
+          } else {
+            topOp[1] = this.getNamed(topOp[2], topOp[1])
+          }
+          value += topOp[1] 
         }
       } else if (group[0][0] === '+') {
         value = group[0][1]
@@ -196,16 +198,20 @@ class Plainbudget {
           }
           if (op[0] === '+') {
             multiplier = this.parseMultiplier(op[2])
-            op[1] = this.getNamed(multiplier ? multiplier[0] : op[2], op[1])
-            value += multiplier
-              ? op[1] * parseInt(multiplier[1])
-              : op[1]
+            if (multiplier) {
+              op[1] = this.getNamed(multiplier[0], op[1]) * parseInt(multiplier[1])
+            } else {
+              op[1] = this.getNamed(op[2], op[1])
+            }
+            value += op[1]
           } else if ('-~'.includes(op[0])) {
             multiplier = this.parseMultiplier(op[2])
-            op[1] = this.getNamed(multiplier ? multiplier[0] : op[2], op[1])
-            value -= multiplier
-              ? op[1] * parseInt(multiplier[1])
-              : op[1]
+            if (multiplier) {
+              op[1] = this.getNamed(multiplier[0], op[1]) * parseInt(multiplier[1])
+            } else {
+              op[1] = this.getNamed(op[2], op[1])
+            }
+            value -= op[1]
           }
         }
       }
