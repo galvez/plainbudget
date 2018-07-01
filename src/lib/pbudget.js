@@ -171,8 +171,6 @@ class Plainbudget {
       named = this.getNamed(op[2], op[1])
       if (named[0]) {
         op[1] = named[1]
-      } else {
-        op[1] = 0
       }
       return op[1]
     }
