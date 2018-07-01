@@ -35,7 +35,7 @@ const computeAll = (srcs, options = {}) => {
 }
 
 const compute = (src, text, options = {}) => {
-  try {
+  // try {
     if (!text) {
       console.log('No source input provided.')
       process.exit(1)
@@ -48,13 +48,13 @@ const compute = (src, text, options = {}) => {
       process.stdout.write(`${computed}\n`)
       process.exit(0)
     }
-  } catch (err) {
-    console.log(!src
-      ? 'Error computing source'
-      : `Error computing source file: ${src}`
-    )
-    process.exit(1)
-  }
+  // } catch (err) {
+  //   console.log(!src
+  //     ? 'Error computing source'
+  //     : `Error computing source file: ${src}`
+  //   )
+  //   process.exit(1)
+  // }
 }
 
 const computeFromStdin = (text, options = {}) => {
