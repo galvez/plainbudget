@@ -4,7 +4,23 @@
 npm install pbudget -g
 ```
 
+Latest library version is **0.2.8**:
+
+# ESM
+
+```js
+import { Plainbudget } from 'pbudget'
+```
+
+# CommonJS
+
+```js
+const { Plainbudget } = require('pbudget')
+```
+
 See [http://galvez.github.io/plainbudget](http://galvez.github.io/plainbudget) for details.
+
+Library API *badly needs docs*, see `src/components/Sheet.vue` for now.
 
 # CLI
 
