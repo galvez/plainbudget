@@ -17,9 +17,9 @@ class Plainbudget {
         const pb = new Plainbudget(sheets[s])
         pb.parse()
         pb.calcNamed()
-        allGroups.splice(allGroups.length, 0, ...pb.groups)
-        allNamed = { ...allNamed, ...pb.named }
-        return { ...obj, [s]: pb }
+        allGroups.splice(allGroups.length, 0, Object.assign({}, pb.groups))
+        allNamed = Object.assign({}, allNamed, pb.named)
+        return Object.assign({}, obj, { [s]: pb })
       }, {})
     return Object.keys(instances)
       .reduce((obj, key) => {
@@ -28,7 +28,7 @@ class Plainbudget {
         i.padding = i.getPadding(allGroups)
         i.calcFlows()
         i.compute(false)
-        return { ...obj, [key]: i.text }
+        return Object.assign({}, obj, { [key]: i.text })
       }, {})
   }
 

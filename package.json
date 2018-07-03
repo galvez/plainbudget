@@ -14,17 +14,16 @@
   },
   "author": "Jonas Galvez",
   "dependencies": {
-    "@nuxtjs/pwa": "^2.0.8",
-    "nuxt": "^1.4.0",
-    "pbudget": "^0.2.5",
-    "sade": "^1.4.1",
+    "nuxt": "^1.4.1",
+    "pbudget": "^0.2.8",
     "vue": "^2.4.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
-    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-es2015-parameters": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
     "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
