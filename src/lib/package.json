@@ -5,10 +5,10 @@
   "license": "MIT",
   "description": "Minimalist plain text spreasheet calculator",
   "engines": {
-    "node": "8.3.0",
-    "npm": "5.3.0"
+    "node": ">=8.6.0"
   },
   "bin": "cli.js",
+  "module": "pbudget.esm.js",
   "dependencies": {
     "commander": "^2.15.1"
   }
