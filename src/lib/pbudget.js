@@ -79,7 +79,7 @@ class Plainbudget {
     this.lines = this.text.split(/\n/)
     let group = null
     let op, line
-    for (let i = 0, len = this.lines.length; i < len; i++) {
+    for (let i = 0; i < this.lines.length; i++) {
       line = this.lines[i].trim()
       op = line[0]
       if ('=+'.includes(op) && group === null) {
@@ -105,9 +105,9 @@ class Plainbudget {
     const padding = Math.max(this.padding, this.getPadding())
     const updated = []
     let group, op
-    for (let x = 0, xlen = this.groups.length; x < xlen; x++) {
+    for (let x = 0; x < this.groups.length; x++) {
       group = this.groups[x]
-      for (let y = 0, ylen = group.length; y < ylen; y++) {
+      for (let y = 0; y < group.length; y++) {
         op = group[y]
         updated.push(`${op[0]} ${op[1].toString().padStart(padding)} ${op[2]}\n`)
       }
@@ -185,7 +185,7 @@ class Plainbudget {
     let topOp, op
     let multiplier
     let named
-    for (let g = 0, glen = groupIndices.length; g < glen; g++) {
+    for (let g = 0; g < groupIndices.length; g++) {
       group = this.groups[groupIndices[g]]
       if ('='.includes(group[0][0])) {
         if (group[0][2] === '') {
@@ -193,7 +193,7 @@ class Plainbudget {
         }
         value = 0
         topOps = group.slice(1)
-        for (let x = 0, xlen = topOps.length; x < xlen; x++) {
+        for (let x = 0; x < topOps.length; x++) {
           topOp = topOps[x]
           if (topOp[1] === '?' || topOp[0] === 'x') {
             continue
@@ -208,7 +208,7 @@ class Plainbudget {
       } else if (group[0][0] === '+') {
         value = group[0][1]
         ops = group.slice(1)
-        for (let y = 0, ylen = ops.length; y < ylen; y++) {
+        for (let y = 0; y < ops.length; y++) {
           op = ops[y]
           if (op[1] === '?' || op[0] === 'x') {
             continue
@@ -233,9 +233,9 @@ class Plainbudget {
     groups = groups || this.groups
     let p = 3
     let nlen, group
-    for (let x = 0, xlen = groups.length; x < xlen; x++) {
+    for (let x = 0; x < groups.length; x++) {
       group = groups[x]
-      for (let y = 0, ylen = group.length; y < ylen; y++) {
+      for (let y = 0; y < group.length; y++) {
         if (group[y][1] !== null) {
           nlen = group[y][1].toString().length
           if (nlen > (p + 1)) {
