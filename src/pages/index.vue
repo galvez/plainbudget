@@ -12,6 +12,10 @@
       using a script I wrote called <b class="pb">plainbudget</b>, which is 
       now presented here ported to JavaScript, built with <a href="https://nuxtjs.org/">Nuxt</a>.</p>
 
+      <div class="npm-install">
+      <a href="https://github.com/galvez/plainbudget" class="mono">npm install pbudget -g</a>
+      </div>
+
       <p>It's designed
       to be extremely minimalist and processes text formatted like a series of 
       <b>value groups</b>, like a basic bank statement. Depending on what operations
@@ -148,6 +152,18 @@ b.mono {
       font-family: 'Fira Mono', monospace;
       font-size: 15px;
     }
+  }
+}
+.npm-install {
+  padding: 20px;
+  padding-bottom: 10px;
+  a {
+    display: inline-block;
+    font-family: 'Fira Mono', monospace;
+    border: 2px solid #aa0001;
+    color: #aa0001;
+    padding: 20px;
+    font-size: 25px;
   }
 }
 .ta-wrapper {
