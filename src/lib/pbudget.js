@@ -4,17 +4,23 @@ const MULTIPLIER_REGEX = /^(.*?)\s+x\s+(\d+)$/
 
 class Plainbudget {
 
-  static computeSheet (sheet) {
+  static computeSheet (sheet, padding = 3) {
     const pb = new Plainbudget(sheet)
+    if (padding !== 3) { // default
+      pb.padding = padding
+    }
     return pb.compute()
   }
 
-  static computeSheets (sheets) {
+  static computeSheets (sheets, padding = 3) {
     let allNamed = {}
     let allGroups = []
     const instances = Object.keys(sheets)
       .reduce((obj, s) => {
         const pb = new Plainbudget(sheets[s])
+        if (padding !== 3) { // default
+          pb.padding = padding
+        }
         pb.parse()
         pb.calcNamed()
         allGroups.splice(allGroups.length, 0, Object.assign({}, pb.groups))
@@ -102,7 +108,9 @@ class Plainbudget {
       this.calcNamed()
       this.calcFlows()
     }
-    const padding = Math.max(this.padding, this.getPadding())
+    const padding = this.padding !== null
+      ? Math.max(this.padding, this.getPadding())
+      : 0
     const updated = []
     let group, op
     for (let x = 0; x < this.groups.length; x++) {
@@ -122,7 +130,7 @@ class Plainbudget {
     if (varMatch) {
       label = varMatch[1]
       this.named[label] = value
-    }    
+    }
   }
 
   getNamed (label, value) {
@@ -184,7 +192,6 @@ class Plainbudget {
     let topOps, ops
     let topOp, op
     let multiplier
-    let named
     for (let g = 0; g < groupIndices.length; g++) {
       group = this.groups[groupIndices[g]]
       if ('='.includes(group[0][0])) {
@@ -202,7 +209,7 @@ class Plainbudget {
           if (multiplier) {
             value += topOp[1] * parseInt(multiplier[1])
           } else {
-            value += topOp[1] 
+            value += topOp[1]
           }
         }
       } else if (group[0][0] === '+') {
