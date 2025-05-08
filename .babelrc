@@ -1,9 +1,0 @@
-{
-  "presets": [
-    [ "es2015", "stage-3" ]
-  ],
-  "plugins": [
-    "add-module-exports",
-  	"transform-object-rest-spread"
-  ]
-}
