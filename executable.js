@@ -20,8 +20,8 @@ function compute (src, text, options = {}) {
     const pb = new PlainBudget(text)
     pb.process()
     const computed = pb.renderWithPadding()
-    if (src && options.S) {
-      fs.writeFileSync(src, `${computed}\n`, 'utf8')
+    if (src && options.save) {
+      fs.writeFileSync(src, computed, 'utf8')
       process.exit(0)
     } else {
       process.stdout.write(`${computed}\n`)
