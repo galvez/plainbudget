@@ -1,43 +1,23 @@
 {
-  "name": "plainbudget",
-  "version": "0.1.0",
-  "description": "",
-  "engines": {
-    "node": "8.3.0",
-    "npm": "5.3.0"
+  "name": "pbudget",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "pbudget": "./executable.js"
   },
   "scripts": {
-    "dev": "nuxt dev",
-    "start": "nuxt build && nuxt start",
-    "build": "nuxt generate",
-    "lint": "eslint --ext .js,.vue ."
+    "test": "node --test",
+    "lint": "oxlint ."
   },
-  "author": "Jonas Galvez",
-  "dependencies": {
-    "nuxt": "^1.4.1",
-    "pbudget": "^0.2.8",
-    "vue": "^2.4.2"
-  },
+  "files": [
+    "index.js",
+    "executable.js"
+  ],
+  "main": "./index.js",
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-es2015-parameters": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "css-loader": "^0.28.4",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-loader": "^1.6.1",
-    "eslint-plugin-html": "^2.0.0",
-    "eslint-plugin-promise": "^3.4.1",
-    "eslint-plugin-standard": "^2.0.1",
-    "less": "^2.7.2",
-    "less-loader": "^4.0.5",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "standard": "^10.0.2",
-    "webpack": "^3.10.0",
-    "webpack-node-externals": "^1.6.0"
+    "oxlint": "^0.16.9"
+  },
+  "dependencies": {
+    "commander": "^13.1.0"
   }
 }

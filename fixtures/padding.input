@@ -1,0 +1,14 @@
+=    3500 Housing
+-    2000 Rent
+-    1000 Utilities
+-     500 Security
+
+=    1500 Office
+-    1000 Rent
+-     500 Utilities
+
++   10000 Income
+-    3500 Housing
+-    1500 Office
+-    1000 Groceries
+=    4000

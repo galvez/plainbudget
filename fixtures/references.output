@@ -1,0 +1,43 @@
+
+= Expenses Group 1
+- 100 Something one
+- 200 Something two
+- 300 Something three
+
+= Expenses Group 2
+- Expenses Group 1
+- 400 Something four
+
+= Expenses Group 3
+- Expenses Group 1
+- Expenses Group 2
+- Expenses Group 4
+- 500 Something
+
+= Expenses Group 4
+- Expenses Group 3
+- Expenses Group 1
+
+= Expenses Group 5
+- 100 Something one
+- Expenses Group 6
+- 200 Something two
+
+= Expenses Group 6
+- 300 Something three
+
+= Income group
+- 2000 Client A
+- 5000 Client B
+- 500 SaaS Subscriptions
+
++ Income group
+- Expenses Group 1
+
+= Codependent 1
+- 10 Foo
+- Codependent 2
+
+= Codependent 2
+- 20 Bar
+- Codependent 1

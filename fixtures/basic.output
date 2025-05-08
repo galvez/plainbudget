@@ -1,0 +1,35 @@
+
+= Group 1
+- 100 Something one
+- 200 Something two
+-400Invalid entry (missing spaces) (makes the whole block non-computable)
+- 300 Something three
+
+= 500 Group 2
+- 100 Something one
+- 200 Something two x 2
+Invalid entry (makes the whole block non-computable)
+- 300 Something three
+- Group 1
+
+Random text.
+
+Computable block:
++ Income A
++ Income B
++ Extra Income Group
+- Group 3
+- 500 Random
+
+More random text preceeded by two blank lines.
+
+Another computable block:
+= Group 3
+- Something
+- 1000 Other
+
+Another final non-computable line.
+
+= 500 Group 4
+- 100 Something one
+- 200 Something two

@@ -1,0 +1,16 @@
+
+Test to ensure negative flows are detected.
+
++ 5000 Income
+- 4000 Expense
+- 2000 Expense
++ 2000 Income
+
+On the third line, balance dips to -1000. 
+
+The group must be marked non-computable in this case.
+
+This other group should compute successfully:
+
++ 5000 Income
+- 4000 Expenses
