@@ -4,7 +4,7 @@ Minimalist plain text budgeting.
 
 [**Read the blog post.**](https://hire.jonasgalvez.com.br/2025/may/8/plainbudget)
 
-[**Get the app.**](https://plainbudget.netlify.app/)
+[**Get the app.**](https://plainbudget.com/)
 
 ```
 % npm i pbudget -g
