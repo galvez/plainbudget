@@ -59,10 +59,7 @@ test('incomplete', () => {
 })
 
 test('missing', () => {
-  const { input, output } = loadFixture('missing')
-  const pb = new PlainBudget(input)
-  pb.process()
-  ok(output === pb.renderWithPadding())
+  processingTest('missing')
 })
 
 test('negative', () => {
@@ -98,10 +95,7 @@ test('multiplier', () => {
 })
 
 test('padding', () => {
-  const { input, output } = loadFixture('padding')
-  const pb = new PlainBudget(input)
-  pb.process()
-  ok(output === pb.renderWithPadding())
+  processingTest('padding', true)
 })
 
 test('references', () => {
@@ -139,10 +133,7 @@ test('single', () => {
 })
 
 test('dedupe', () => {
-  const { input, output } = loadFixture('dedupe')
-  const pb = new PlainBudget(input)
-  pb.process()
-  ok(output === pb.renderWithPadding())
+  processingTest('dedupe', true)
 })
 
 function loadFixture (...fixtureInput) {
@@ -151,4 +142,14 @@ function loadFixture (...fixtureInput) {
   const input = readFileSync(`${fixture}.input`, 'utf8')
   const output = readFileSync(`${fixture}.output`, 'utf8')
   return { input, output }
+}
+
+function processingTest(fixture, padding = false) {
+  const { input, output } = loadFixture(fixture)
+  const pb = new PlainBudget(input)
+  pb.process()
+  const rendered = padding 
+    ? pb.renderWithPadding()
+    : pb.render()
+  ok(output === rendered)
 }
