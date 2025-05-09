@@ -92,7 +92,7 @@ Minimalist plain text budgeting.
 
 ```js
 import { readFileSync } from 'node:fs'
-import { PlainBudget } from 'plainbudget'
+import { PlainBudget } from 'pbudget'
 
 const budget = readFileSync('Budget.txt', 'utf8')
 
