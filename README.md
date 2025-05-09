@@ -27,7 +27,7 @@ Minimalist plain text budgeting.
 
 - **Multipliers** can added to any referenced group or value.
 
-- Blocks fo text with invalid syntax will be ignored and remain intact in the source.
+- Blocks of text with invalid syntax will be ignored and remain intact in the source.
 
 - Circular dependencies (group references) will cause both groups to be ignored.
 
