@@ -18,7 +18,6 @@ Minimalist plain text budgeting.
 
 ## Supported Syntax
 
-
 - **Groups** start with `=` and are used to group values.
 
 - **Flows** start with `+` and are used to express cash flow.
@@ -88,3 +87,23 @@ Minimalist plain text budgeting.
 </td>
 </tr>
 </table>
+
+## Programmatic Usage
+
+```js
+import { readFileSync } from 'node:fs'
+import { PlainBudget } from 'plainbudget'
+
+const budget = readFileSync('Budget.txt', 'utf8')
+
+const pbudget = new PlainBudget(budget)
+
+pbudget.process()
+
+console.log(pbudget.renderWithPadding())
+
+pbudget.computeStats()
+
+console.log(pbudget.stats)
+
+```
