@@ -1,6 +1,6 @@
 import { ok, deepEqual } from 'node:assert'
 import { test } from 'node:test'
-import { readFileSync } from 'node:fs'
+import { writeFileSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { PlainBudget } from './index.js'
 
@@ -136,6 +136,14 @@ test('single', () => {
   const pb = new PlainBudget(input)
   pb.process()
   ok(output === pb.render())
+})
+
+test('dedupe', () => {
+  const { input, output } = loadFixture('dedupe')
+  const pb = new PlainBudget(input)
+  pb.process()
+  writeFileSync('fixtures/dedupe.output', pb.renderWithPadding())
+  ok(output === pb.renderWithPadding())
 })
 
 function loadFixture (...fixtureInput) {

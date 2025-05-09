@@ -106,15 +106,18 @@ export class PlainBudget {
       for (const entry of group) {
         if (entry[0] === '=') {
           const id = this.ids.get(entry)
-          if (this.index.has(id)) {
-            dupes.push(this.index.get(id))
+          if (id) {
+            if (this.index.has(id)) {
+              dupes.push(this.index.get(id))
+            }
+            this.index.set(id, group)
           }
-          this.index.set(id, group)
         } else {
           continue
         }
       }
     }
+
     for (const group of dupes) {
       const i = this.blocks.findIndex(_ => _ === group)
       this.ids.delete(group)
