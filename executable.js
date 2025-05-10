@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 
 import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { join, dirname } from 'node:path'
 import { Command } from 'commander'
 import { PlainBudget } from './index.js'
 
+// For Node v20 compatibility
+const __dirname = dirname(fileURLToPath(import.meta.url))
 const pbudget = new Command()
+const pkg = JSON.parse(fs.readFileSync(join(__dirname, 'package.json'), 'utf8'))
 
 pbudget
-  .version('1.0.0')
+  .version(pkg.version)
   .option('--save, -s', 'modifies source file with result.')
   .option('--stats', 'outputs JSON with projections and distribution.')
 
