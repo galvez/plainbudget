@@ -1,6 +1,6 @@
 {
   "name": "pbudget",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "bin": {
     "pbudget": "./executable.js"
@@ -19,5 +19,10 @@
   },
   "dependencies": {
     "commander": "^13.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galvez/plainbudget.git"
+  },
+  "license": "MIT"
 }

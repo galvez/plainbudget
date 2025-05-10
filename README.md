@@ -105,5 +105,4 @@ console.log(pbudget.renderWithPadding())
 pbudget.computeStats()
 
 console.log(pbudget.stats)
-
 ```
