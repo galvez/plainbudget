@@ -39,7 +39,7 @@ Minimalist plain text budgeting.
 **Input**
 
 ```
-= Housing
+= Main
 - 2000 Rent
 - 1000 Utilities
 - 500 Leisure
