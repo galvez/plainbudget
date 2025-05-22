@@ -8,7 +8,7 @@ import { PlainBudget } from './index.js'
 
 // For Node v20 compatibility
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const pbudget = new Command()
+const pbudget = new Command('pbudget')
 const pkg = JSON.parse(fs.readFileSync(join(__dirname, 'package.json'), 'utf8'))
 
 pbudget
